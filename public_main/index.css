@@ -5,7 +5,16 @@ body {
   margin-right: 30%;
   padding: 100px;
   
+  
 }
+
+.container{
+  display:flex;
+  height: 70%;
+  width:70%;
+  border-radius: 30px;
+}
+
 div{
   margin-top: 30px;
 }
@@ -13,6 +22,7 @@ div{
 #extra{
   height: auto;
   width: auto;
+  background-color: #b60c0c;
 }
 
 #controls {
@@ -27,7 +37,7 @@ div{
   font-size: 2em;
   font-weight: bold;
   margin: 90px 40px;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
 }
 
@@ -38,6 +48,7 @@ div{
   height: 550px;
   padding: 20px;
   width: 200px;
+  cursor: pointer;
 }
 
 .stat{

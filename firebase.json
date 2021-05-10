@@ -13,7 +13,7 @@
   },
   "hosting": {
     "site": "chrisnguyen",
-    "public": "public_main",
+    "public": "public_main", 
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -22,7 +22,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/index.js"
       }
     ]
   },

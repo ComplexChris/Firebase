@@ -8,10 +8,13 @@ const _date = "15 April 2021";
 var definitions = {
   stopButton : ["stop", "stopLight" ],
   slowButton : ["slow", "slowLight" ],
-  goButton : ["go", "goLight" ]
+  goButton : ["go", "goLight" ],
+  stopLight : ["stop", "stopLight", "stopButton" ],
+  slowLight : ["slow", "slowLight", "slowButton" ],
+  goLight : ["go", "goLight", "goButton"]
 };
 
-const indexs = ["stopButton", "slowButton", "goButton"];
+const indexs = ["stopButton", "slowButton", "goButton"]   //, "goLight", "slowLight", "stopLight"];
 
 // Create global variable because user may not want to be in loop
 // Start with database that keeps adding
@@ -82,6 +85,9 @@ function assignListeners( buttonNode, maxEvents=1 ){
   function getColor(mouseEvent){
     var element = mouseEvent.target
     var color = element.id ;
+    if( indexs.indexOf(color)<0 ){
+      color = definitions[color][2]
+    }
     return color;   // Will return goButton
   }
 
@@ -93,14 +99,19 @@ function checkGame(shortList, longList){
 }
 
 async function checkMove(mouseEvent){
+  // Primary callback for button eventListener
   var color = getColor(mouseEvent)
   console.log("Color is: "+color)
+  await flickLight( color )
   if( !(color in definitions) || playingColors === true  ){ 
     console.log("Please wait your turn! >:-( ");
     return
   }
-  flickButton( color )
-  await flickLight( color )
+  else if(soFar.length===0){
+    return;
+  }
+  //flickButton( color )
+  //await flickLight( color )
   
   
   if(userSoFar.length>1 && userSoFar.length+1>soFar.length){
@@ -136,7 +147,8 @@ async function checkMove(mouseEvent){
       console.log("Status: "+status)
       var score = soFar.length-1
       if( !status && soFar.length>0 ){
-        
+        soFar = []
+        userSoFar = []
         var yay = (score>highScore) ? "Yay, new high score!" :  "Rats! You hit the wrong button.";
         if(score>highScore){
           highScore = score;
@@ -195,22 +207,24 @@ function initialize(){
 
   highScoreBox = document.createElement("a")
   highScoreBox.className = "stat score"
-  highScoreBox.style.marginTop = "4%"; 
+  highScoreBox.style.marginTop = "6%"; 
   highScoreBox.textContent = "Highest Score: "+highScore 
   //highScoreBox.textContent = "fdghjfgh"
 
-  var extra = document.createElement("div");
-  extra.id = "extra"
+  var extra = document.getElementById("extra");
+  //extra.id = "extra"
 
   extra.append(statBox)
   extra.appendChild(textBox)
   extra.appendChild(highScoreBox)
 
-  document.body.appendChild(extra)
+  //document.body.appendChild(extra)
   
 
   var allButtons = document.querySelectorAll(".button");
   allButtons.forEach( assignListeners );
+  var allBulbs = document.querySelectorAll(".bulb");
+  allBulbs.forEach( assignListeners );
 }
 
 function deg(){
